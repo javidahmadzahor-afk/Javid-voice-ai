@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ps" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAWID VOICE AI</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#080d18;
+ color:white;
+ font-family:Arial,sans-serif;
+ text-align:center;
+ padding:25px 15px;
+}
+h1{color:#20aaff;margin-top:35px}
+p{color:#b9cce0}
+.box{
+ max-width:450px;
+ margin:35px auto;
+ background:#111d30;
+ padding:25px;
+ border-radius:20px;
+ border:1px solid #167ac0;
+}
+button{
+ background:#078ce0;
+ color:white;
+ border:0;
+ padding:14px 25px;
+ border-radius:12px;
+ font-size:17px;
+ margin:8px;
+}
+textarea{
+ width:100%;
+ height:120px;
+ padding:12px;
+ border-radius:10px;
+ background:#07111f;
+ color:white;
+ font-size:17px;
+}
+</style>
+</head>
+<body>
+<h1>JAWID VOICE AI</h1>
+<p>ستاسو هوښیار غږیز مرستیال</p>
+<div class="box">
+<h2>له ما سره خبرې وکړئ</h2>
+<textarea id="message" placeholder="خپله خبره ولیکئ..."></textarea>
+<br>
+<button onclick="speak()">غږ واورئ 🔊</button>
+<button onclick="listen()">خبرې وکړئ 🎤</button>
+<p id="status">ښه راغلاست!</p>
+</div>
+<script>
+function speak(){
+ let text=document.getElementById("message").value;
+ if(!text)return;
+ let speech=new SpeechSynthesisUtterance(text);
+ speech.lang="ps-AF";
+ speechSynthesis.speak(speech);
+}
+function listen(){
+ const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SpeechRecognition){
+  document.getElementById("status").innerText="ستاسو براوزر د غږ پېژندنې ملاتړ نه کوي.";
+  return;
+ }
+ let recognition=new SpeechRecognition();
+ recognition.lang="ps-AF";
+ recognition.onresult=function(e){
+  document.getElementById("message").value=e.results[0][0].transcript;
+ };
+ recognition.onerror=function(){
+  document.getElementById("status").innerText="غږ ونه پېژندل شو.";
+ };
+ recognition.start();
+}
+</script>
+</body>
+</html>

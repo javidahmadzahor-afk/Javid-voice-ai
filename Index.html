@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html lang="ps" dir="rtl">
+<html lang="ps">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,77 +9,95 @@
 *{box-sizing:border-box}
 body{
  margin:0;
- background:#080d18;
- color:white;
  font-family:Arial,sans-serif;
+ background:#050b18;
+ color:white;
  text-align:center;
  padding:25px 15px;
 }
-h1{color:#20aaff;margin-top:35px}
-p{color:#b9cce0}
-.box{
- max-width:450px;
+.container{
+ max-width:500px;
  margin:35px auto;
- background:#111d30;
  padding:25px;
- border-radius:20px;
- border:1px solid #167ac0;
+ background:#101d35;
+ border:1px solid #1769d2;
+ border-radius:22px;
+ box-shadow:0 0 25px #0753a855;
 }
-button{
- background:#078ce0;
- color:white;
- border:0;
- padding:14px 25px;
- border-radius:12px;
- font-size:17px;
- margin:8px;
-}
+h1{color:#42a5ff;font-size:30px}
+.tag{color:#a9c8ec}
 textarea{
  width:100%;
- height:120px;
- padding:12px;
- border-radius:10px;
- background:#07111f;
+ height:130px;
+ padding:15px;
+ border-radius:12px;
+ border:1px solid #398ee8;
+ background:#071326;
  color:white;
  font-size:17px;
+ margin:15px 0;
 }
+button{
+ width:100%;
+ padding:14px;
+ margin:7px 0;
+ border:0;
+ border-radius:12px;
+ background:#0878ed;
+ color:white;
+ font-size:17px;
+ font-weight:bold;
+}
+button:active{background:#0454a8}
+#result{color:#55c5ff;min-height:25px}
+footer{color:#7894b8;font-size:13px;margin-top:25px}
 </style>
 </head>
 <body>
+<div class="container">
 <h1>JAWID VOICE AI</h1>
-<p>ستاسو هوښیار غږیز مرستیال</p>
-<div class="box">
-<h2>له ما سره خبرې وکړئ</h2>
-<textarea id="message" placeholder="خپله خبره ولیکئ..."></textarea>
-<br>
-<button onclick="speak()">غږ واورئ 🔊</button>
-<button onclick="listen()">خبرې وکړئ 🎤</button>
-<p id="status">ښه راغلاست!</p>
+<p class="tag">Your Smart Voice & Translation Assistant</p>
+
+<textarea id="message" placeholder="دلته خپله خبره ولیکئ..."></textarea>
+
+<button onclick="listen()">🎤 Speak</button>
+<button onclick="translateText()">🌍 Translate to English</button>
+<button onclick="speakText()">🔊 Read Aloud</button>
+
+<p id="result">Welcome to JAWID VOICE AI</p>
 </div>
+
+<footer>© 2026 JAWID VOICE AI</footer>
+
 <script>
-function speak(){
- let text=document.getElementById("message").value;
- if(!text)return;
- let speech=new SpeechSynthesisUtterance(text);
- speech.lang="ps-AF";
- speechSynthesis.speak(speech);
-}
 function listen(){
- const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SpeechRecognition){
-  document.getElementById("status").innerText="ستاسو براوزر د غږ پېژندنې ملاتړ نه کوي.";
+ const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+ if(!Speech){
+  document.getElementById("result").innerText="Speech recognition is not supported in this browser.";
   return;
  }
- let recognition=new SpeechRecognition();
+ const recognition = new Speech();
  recognition.lang="ps-AF";
- recognition.onresult=function(e){
-  document.getElementById("message").value=e.results[0][0].transcript;
+ recognition.onresult=function(event){
+  document.getElementById("message").value=event.results[0][0].transcript;
  };
  recognition.onerror=function(){
-  document.getElementById("status").innerText="غږ ونه پېژندل شو.";
+  document.getElementById("result").innerText="Voice error. Please try again.";
  };
  recognition.start();
+}
+function translateText(){
+ document.getElementById("result").innerText=
+ "AI translation service must be connected to enable translation.";
+}
+function speakText(){
+ const text=document.getElementById("message").value;
+ if(!text){alert("Please write something first.");return;}
+ const speech=new SpeechSynthesisUtterance(text);
+ speech.lang="ps-AF";
+ speechSynthesis.speak(speech);
 }
 </script>
 </body>
 </html>
+
